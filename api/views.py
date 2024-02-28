@@ -57,39 +57,46 @@ class LoginView(APIView):
             "iat": datetime.datetime.utcnow(),
         }
 
-        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+        token = jwt.encode(payload, "secret", algorithm="HS256")
 
         response = Response()
-
-        response.set_cookie(key="jwt", value=token, httponly=True)
+        response["Authorization"] = f"Bearer {token.decode('utf-8')}"
         response.data = {"jwt": token}
         return response
 
 
+
 class LogoutView(APIView):
     def post(self, request):
-        response = Response()
-        response.delete_cookie("jwt")
-        response.data = {"message": "success"}
+        response = Response({"message": "success"})
+        response.delete_header("Authorization")
         return response
-
 
 class UserInfo(APIView):
     def get(self, request):
-        token = request.COOKIES.get("jwt")
+        authorization_header = request.headers.get("Authorization")
+
+        if not authorization_header or "Bearer " not in authorization_header:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        token = authorization_header.split(" ")[1]
+
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            payload = jwt.decode(token, "secret", algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
         user = User.objects.filter(id=payload["id"]).first()
+
+        if user is None:
+            raise AuthenticationFailed("User not found!")
+
         serializer = UserSerializer(user)
         return Response(serializer.data)
-
-
+        
 class TrajectDetail(APIView):
     def post(self, request):
 
