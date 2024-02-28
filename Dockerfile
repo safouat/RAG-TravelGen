@@ -16,9 +16,5 @@ COPY . .
 # Expose the port that the Django app will run on
 EXPOSE 8000
 
-RUN python manage.py makemigration
-
-RUN python manage.py migrate
-
 # Set the command to run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000
