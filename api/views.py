@@ -396,25 +396,25 @@ class TrajectPlanification(APIView):
                         "type": "Sightseeing",
                         "location": "Jardin Majorelle, Marrakech",
                         "description": "Explore the beautiful gardens of Jardin Majorelle",
-                        "price": "$10",
+                        "price": "$10"
                     },
                     {
                         "name": "Explore Medina",
                         "type": "Sightseeing",
                         "location": "Medina, Marrakech",
                         "description": "Get lost in the bustling streets of the historic Medina",
-                        "price": "Free",
+                        "price": "Free"
                     },
                     {
                         "name": "Shop in Souks",
                         "type": "Shopping",
                         "location": "Souks, Marrakech",
                         "description": "Experience the vibrant souks of Marrakech",
-                        "price": "Varies",
-                    },
+                        "price": "Varies"
+                    }
                 ],
                 "food": ["Try Tagine", "Taste Moroccan Tea", "Enjoy Couscous"],
-                "transportation": "Local taxis or walking",
+                "transportation": "Local taxis or walking"
             },
             "day2": {
                 "activities": [
@@ -423,41 +423,43 @@ class TrajectPlanification(APIView):
                         "type": "Sightseeing",
                         "location": "Bahia Palace, Marrakech",
                         "description": "Discover the grandeur of Bahia Palace",
-                        "price": "$7",
+                        "price": "$7"
                     },
                     {
                         "name": "Explore Jemaa el-Fnaa",
                         "type": "Sightseeing",
                         "location": "Jemaa el-Fnaa, Marrakech",
                         "description": "Experience the lively square of Jemaa el-Fnaa",
-                        "price": "Free",
+                        "price": "Free"
                     },
                     {
                         "name": "Relax in Hammam",
                         "type": "Leisure",
                         "location": "Hammam, Marrakech",
                         "description": "Indulge in a traditional Moroccan hammam experience",
-                        "price": "$20",
-                    },
+                        "price": "$20"
+                    }
                 ],
                 "food": [
                     "Try Pastilla",
                     "Savor Moroccan Pastries",
-                    "Enjoy Harira Soup",
+                    "Enjoy Harira Soup"
                 ],
-                "transportation": "Local buses or rental car",
-            },
+                "transportation": "Local buses or rental car"
+            }
         }
-
+        data = json.dumps(data)
         messages = [
             SystemMessage(
                 content=f"""
-Act as a travel recommendation.the journees, you should generate it based on your knowledge, adjusting the length according to the number of days the user will spend there, and strictly adhere to the provided template :
-{data}
-"""
+            Act as a travel recommendation. 
+            the journees, you should generate it based on your knowledge, adjusting the length according to the number of days the user will spend there, 
+            and strictly adhere to the provided template: {data}, THE OUTPUT MUST BE A VALID JSON.
+            """
             ),
             HumanMessage(
-                content=f"give me a planning for activities i will spend {time} in {ville} i will be there with {number} member"
+                content=f"""give me a planning for activities to do while my {time} stay at {ville},I will be there with {number} member,
+                  and I want to do some activities and eat some food, and i want to know how to move from one place to another"""
             ),
         ]
         response = chat(messages)
