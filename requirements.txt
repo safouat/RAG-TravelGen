@@ -28,3 +28,4 @@ rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
 rpds-py==0.10.6
 rsa==4.9
+django-cors-headers-4.3.1
