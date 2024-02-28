@@ -57,7 +57,7 @@ class LoginView(APIView):
             "iat": datetime.datetime.utcnow(),
         }
 
-        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+        token = jwt.encode(payload, JWT_SECRET, algorithms=[JWT_ALGORITHM])
 
         response = Response()
         response["Authorization"] = f"Bearer {token}"
@@ -85,7 +85,7 @@ class UserInfo(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -114,7 +114,7 @@ class TrajectDetail(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
@@ -338,7 +338,7 @@ class GetUserTrajects(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -379,7 +379,7 @@ class TrajectPlanification(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
@@ -473,7 +473,7 @@ class GetUserPlannings(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
