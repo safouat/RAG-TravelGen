@@ -11,8 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the project files to the working directory
-COPY . .
-
+RUN git clone https://github.com/safouat/TravelApi.git
 # Expose the port that the Django app will run on
 EXPOSE 8000
 
