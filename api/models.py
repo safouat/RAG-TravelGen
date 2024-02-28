@@ -29,9 +29,14 @@ class Plan(models.Model):
             super().save(*args, **kwargs)
 
 class Match(models.Model):
-     Date=models.DateField()
-     Country1=models.CharField(max_length=100)
-     Country2=models.CharField(max_length=100)
+     date=models.DateField()
+     country1=models.CharField(max_length=100)
+     flag1=models.CharField(max_length=100,default='none')
+     country2=models.CharField(max_length=100)
+     flag2=models.CharField(max_length=100,default='none')
+     stadium=models.CharField(max_length=100,default='none')
+     city=models.CharField(max_length=100,default='none')
+     title=models.CharField(max_length=100,default='none')
 
 class Guider(models.Model):
     name = models.CharField(max_length=255)
