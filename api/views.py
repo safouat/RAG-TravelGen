@@ -318,18 +318,20 @@ class TrajectDetail(APIView):
         ]
         response = chat(messages)
 
+        json_content = json.loads(response.content)
+
         traject = Traject.objects.create(
             userId=user_id,
             budget=budget,
             ville=ville1,
             time=time,
             person_number=nombre,
-            json_content=json.loads(response.content),
-            description=json.loads(response.content)["description"],
-            title=json.loads(response.content)["title"],
+            json_content=json_content,
+            description=json_content["description"],
+            title=json_content["title"],
         )
 
-        return Response(json.loads(response.content))
+        return Response(json_content)
 
 
 class GetUserTrajects(APIView):
