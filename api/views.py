@@ -353,85 +353,59 @@ class TrajectPlanification(APIView):
   "day1": {
     "activities": [
       {
-        "name": "Visit Medina",
+        "name": "Visit Jardin Majorelle",
         "type": "Sightseeing",
-        "location": "Medina, Tanger",
-        "description": "Explore the historic Medina of Tanger",
+        "location": "Jardin Majorelle, Marrakech",
+        "description": "Explore the beautiful gardens of Jardin Majorelle",
+        "price": "$10"
+      },
+      {
+        "name": "Explore Medina",
+        "type": "Sightseeing",
+        "location": "Medina, Marrakech",
+        "description": "Get lost in the bustling streets of the historic Medina",
         "price": "Free"
       },
       {
-        "name": "Explore Kasbah",
-        "type": "Sightseeing",
-        "location": "Kasbah, Tanger",
-        "description": "Discover the ancient Kasbah of Tanger",
-        "price": "$5"
-      },
-      {
-        "name": "Shopping in Souk",
+        "name": "Shop in Souks",
         "type": "Shopping",
-        "location": "Souk, Tanger",
-        "description": "Experience the vibrant Souk markets of Tanger",
+        "location": "Souks, Marrakech",
+        "description": "Experience the vibrant souks of Marrakech",
         "price": "Varies"
       }
     ],
-    "food": ["Try Tagine", "Taste Couscous", "Enjoy Mint Tea"],
+    "food": ["Try Tagine", "Taste Moroccan Tea", "Enjoy Couscous"],
     "transportation": "Local taxis or walking"
   },
   "day2": {
     "activities": [
       {
-        "name": "Visit Hercules Cave",
+        "name": "Visit Bahia Palace",
         "type": "Sightseeing",
-        "location": "Hercules Cave, Tanger",
-        "description": "Explore the mythical Hercules Cave",
-        "price": "$10"
+        "location": "Bahia Palace, Marrakech",
+        "description": "Discover the grandeur of Bahia Palace",
+        "price": "$7"
       },
       {
-        "name": "Relax on the Beach",
+        "name": "Explore Jemaa el-Fnaa",
+        "type": "Sightseeing",
+        "location": "Jemaa el-Fnaa, Marrakech",
+        "description": "Experience the lively square of Jemaa el-Fnaa",
+        "price": "Free"
+      },
+      {
+        "name": "Relax in Hammam",
         "type": "Leisure",
-        "location": "Beaches, Tanger",
-        "description": "Enjoy a relaxing day on the beautiful beaches",
-        "price": "Free"
-      },
-      {
-        "name": "Explore Cape Spartel",
-        "type": "Sightseeing",
-        "location": "Cape Spartel, Tanger",
-        "description": "Discover the scenic Cape Spartel",
-        "price": "Free"
+        "location": "Hammam, Marrakech",
+        "description": "Indulge in a traditional Moroccan hammam experience",
+        "price": "$20"
       }
     ],
-    "food": ["Fresh seafood", "Paella", "Tapas"],
+    "food": ["Try Pastilla", "Savor Moroccan Pastries", "Enjoy Harira Soup"],
     "transportation": "Local buses or rental car"
-  },
-  "day3": {
-    "activities": [
-      {
-        "name": "Explore Tangier American Legation Museum",
-        "type": "Museum",
-        "location": "Tangier American Legation Museum, Tanger",
-        "description": "Visit the historic Tangier American Legation Museum",
-        "price": "$8"
-      },
-      {
-        "name": "Visit Gran Teatro Cervantes",
-        "type": "Theatre",
-        "location": "Gran Teatro Cervantes, Tanger",
-        "description": "Experience cultural performances at Gran Teatro Cervantes",
-        "price": "$6"
-      },
-      {
-        "name": "Relax in Petit Socco",
-        "type": "Leisure",
-        "location": "Petit Socco, Tanger",
-        "description": "Relax and people-watch in Petit Socco",
-        "price": "Varies"
-      }
-    ],
-    "food": ["Try Bocadillos", "Spanish Omelette", "Churros"],
-    "transportation": "Walking or local buses"
   }
 }
+
 
       
         messages = [
@@ -448,7 +422,7 @@ Act as a travel recommendation.the journees, you should generate it based on you
            json_content=response.content
         )
 
-        return Response(response.content)
+        return Response(json.loads(response.content))
 
 class GetMatchs(ListAPIView):
     queryset = Match.objects.all()  # Assurez-vous que cette requête récupère les objets Match que vous souhaitez sérialiser
