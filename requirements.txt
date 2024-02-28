@@ -1,5 +1,6 @@
 Django
 djangorestframework
+chromadb
 django-filter
 psycopg2-binary
 langchain
