@@ -57,7 +57,7 @@ class LoginView(APIView):
             "iat": datetime.datetime.utcnow(),
         }
 
-        token = jwt.encode(payload, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         response = Response()
         response["Authorization"] = f"Bearer {token}"
@@ -65,12 +65,12 @@ class LoginView(APIView):
         return response
 
 
-
 class LogoutView(APIView):
     def post(self, request):
         response = Response({"message": "success"})
         response.delete_header("Authorization")
         return response
+
 
 class UserInfo(APIView):
     def get(self, request):
@@ -96,7 +96,8 @@ class UserInfo(APIView):
 
         serializer = UserSerializer(user)
         return Response(serializer.data)
-        
+
+
 class TrajectDetail(APIView):
     def post(self, request):
 
