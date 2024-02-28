@@ -1,0 +1,25 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: pass123
+      DATABASE_NAME: postgres
+      DATABASE_PORT: 5432
+    depends_on:
+      - db
+  db:
+    image: postgres:13.1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data

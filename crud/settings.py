@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&nq*=-!4^2q)njydn=p$m_eg%1d2%0u=jk)q*%*sx2y9nxrcmu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -77,17 +77,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'crud.wsgi.application'
 
+DATABASE_NAME = os.environ.get('DATABASE_NAME')
+DATABASE_USER = os.environ.get('DATABASE_USER')
+DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD')
+DATABASE_HOST = os.environ.get('DATABASE_HOST')
+DATABASE_PORT = os.environ.get("DATABASE_PORT")
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',   # Replace 'your_database_name' with the name of your MySQL database.
-        'USER': 'postgres',  # Replace 'your_mysql_username' with your MySQL username.
-        'PASSWORD': 'pass123',  # Replace 'your_mysql_password' with your MySQL password.
-        'HOST': 'localhost',  # Replace 'localhost' with the hostname or IP address of your MySQL server.
-        'PORT': '5432',  # Replace '3306' with the port number of your MySQL server.
+        'NAME': DATABASE_NAME,   # Replace 'your_database_name' with the name of your MySQL database.
+        'USER': DATABASE_USER,  # Replace 'your_mysql_username' with your MySQL username.
+        'PASSWORD': DATABASE_PASSWORD,  # Replace 'your_mysql_password' with your MySQL password.
+        'HOST': DATABASE_HOST,  # Replace 'localhost' with the hostname or IP address of your MySQL server.
+        'PORT': DATABASE_PORT,  # Replace '3306' with the port number of your MySQL server.
     }
 }
 
