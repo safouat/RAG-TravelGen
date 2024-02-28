@@ -8,6 +8,8 @@ local_settings.py
 # Database
 *.sqlite3
 
+/data
+
 # Static files
 /static/
 
