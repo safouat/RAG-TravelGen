@@ -6,6 +6,10 @@ class User(AbstractUser):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
+    username = None
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     
 
 class Traject(models.Model):
@@ -42,6 +46,8 @@ class Guider(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     ville= models.CharField(max_length=255)
+    description= models.CharField(max_length=255,default='none')
+    avatar=models.CharField(max_length=255,default='none')
      
      
 
