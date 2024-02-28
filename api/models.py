@@ -19,6 +19,8 @@ class Traject(models.Model):
     time = models.CharField(max_length=100)
     person_number = models.IntegerField()
     json_content = models.JSONField()
+    description = models.CharField(max_length=2000,default='none')
+
     def save(self, *args, **kwargs):
         # Serialize the JSON content before saving
         self.json_content = json.dumps(self.json_content)
