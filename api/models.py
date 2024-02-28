@@ -46,7 +46,7 @@ class Guider(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     ville= models.CharField(max_length=255)
-    description= models.CharField(max_length=255,default='none')
+    description= models.CharField(max_length=1000,default='none')
     avatar=models.CharField(max_length=255,default='none')
      
      
