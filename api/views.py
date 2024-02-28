@@ -57,10 +57,10 @@ class LoginView(APIView):
             "iat": datetime.datetime.utcnow(),
         }
 
-        token = jwt.encode(payload, "secret", algorithm="HS256")
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         response = Response()
-        response["Authorization"] = f"Bearer {token.decode('utf-8')}"
+        response["Authorization"] = f"Bearer {token}"
         response.data = {"jwt": token}
         return response
 
@@ -85,7 +85,7 @@ class UserInfo(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -109,12 +109,12 @@ class TrajectDetail(APIView):
             persist_directory=CHROMA_PATH2, embedding_function=embedding_function
         )
 
-        token = request.COOKIES.get("jwt")
+        token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
@@ -333,12 +333,12 @@ class TrajectDetail(APIView):
 
 class GetUserTrajects(APIView):
     def get(self, request):
-        token = request.COOKIES.get("jwt")
+        token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -357,7 +357,7 @@ class GetOneUserTraject(APIView):
     def get(self, request):
         id = request.GET.get("id")
 
-        token = request.COOKIES.get("jwt")
+        token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -374,12 +374,12 @@ class GetOneUserTraject(APIView):
 
 class TrajectPlanification(APIView):
     def get(self, request):
-        token = request.COOKIES.get("jwt")
+        token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
@@ -468,12 +468,12 @@ Act as a travel recommendation.the journees, you should generate it based on you
 
 class GetUserPlannings(APIView):
     def get(self, request):
-        token = request.COOKIES.get("jwt")
+        token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            payload = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
