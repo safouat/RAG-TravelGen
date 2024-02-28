@@ -433,8 +433,6 @@ class TrajectPlanification(APIView):
   }
 }
 
-
-        
       
         messages = [
     SystemMessage(content=f"""
@@ -450,7 +448,7 @@ Act as a travel recommendation.the journees, you should generate it based on you
            json_content=response.content
         )
 
-        return Response(json.loads(response.content))
+        return Response(response.content)
 
 class GetMatchs(ListAPIView):
     queryset = Match.objects.all()  # Assurez-vous que cette requête récupère les objets Match que vous souhaitez sérialiser
