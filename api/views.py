@@ -326,7 +326,7 @@ class TrajectDetail(APIView):
             person_number=nombre,
             json_content=json.loads(response.content),
             description=json.loads(response.content)["description"],
-            # title=json.loads(response.content)["title"],
+            title=json.loads(response.content)["title"],
         )
 
         return Response(json.loads(response.content))
@@ -388,6 +388,8 @@ class TrajectPlanification(APIView):
         time = traject.time
         ville = traject.ville
         number = traject.person_number
+        # -----------------------use OpenAI MODELS --------------------#
+        #fmt: off
         data = {
             "day1": {
                 "activities": [

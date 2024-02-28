@@ -20,6 +20,8 @@ class Traject(models.Model):
     person_number = models.IntegerField()
     json_content = models.JSONField()
     description = models.CharField(max_length=2000,default='none')
+    title = models.CharField(max_length=255,default='none')
+
 
     def save(self, *args, **kwargs):
         # Serialize the JSON content before saving
