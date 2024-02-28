@@ -311,97 +311,72 @@ class TrajectPlanification(APIView):
         try:
             payload = jwt.decode(token, "secret", algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("Unauthenticated!")
-        user_id = payload["id"]
-        traject = Traject.objects.filter(userId=user_id).last()
-        time = traject.time
-        ville = traject.ville
-        number = traject.person_number
-        chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3)
-        data = {
-            "day1": {
-                "activities": [
-                    {
-                        "name": "Visit Medina",
-                        "type": "Sightseeing",
-                        "location": "Medina, Tanger",
-                        "description": "Explore the historic Medina of Tanger",
-                        "price": "Free",
-                    },
-                    {
-                        "name": "Explore Kasbah",
-                        "type": "Sightseeing",
-                        "location": "Kasbah, Tanger",
-                        "description": "Discover the ancient Kasbah of Tanger",
-                        "price": "$5",
-                    },
-                    {
-                        "name": "Shopping in Souk",
-                        "type": "Shopping",
-                        "location": "Souk, Tanger",
-                        "description": "Experience the vibrant Souk markets of Tanger",
-                        "price": "Varies",
-                    },
-                ],
-                "food": ["Try Tagine", "Taste Couscous", "Enjoy Mint Tea"],
-                "transportation": "Local taxis or walking",
-            },
-            "day2": {
-                "activities": [
-                    {
-                        "name": "Visit Hercules Cave",
-                        "type": "Sightseeing",
-                        "location": "Hercules Cave, Tanger",
-                        "description": "Explore the mythical Hercules Cave",
-                        "price": "$10",
-                    },
-                    {
-                        "name": "Relax on the Beach",
-                        "type": "Leisure",
-                        "location": "Beaches, Tanger",
-                        "description": "Enjoy a relaxing day on the beautiful beaches",
-                        "price": "Free",
-                    },
-                    {
-                        "name": "Explore Cape Spartel",
-                        "type": "Sightseeing",
-                        "location": "Cape Spartel, Tanger",
-                        "description": "Discover the scenic Cape Spartel",
-                        "price": "Free",
-                    },
-                ],
-                "food": ["Fresh seafood", "Paella", "Tapas"],
-                "transportation": "Local buses or rental car",
-            },
-            "day3": {
-                "activities": [
-                    {
-                        "name": "Explore Tangier American Legation Museum",
-                        "type": "Museum",
-                        "location": "Tangier American Legation Museum, Tanger",
-                        "description": "Visit the historic Tangier American Legation Museum",
-                        "price": "$8",
-                    },
-                    {
-                        "name": "Visit Gran Teatro Cervantes",
-                        "type": "Theatre",
-                        "location": "Gran Teatro Cervantes, Tanger",
-                        "description": "Experience cultural performances at Gran Teatro Cervantes",
-                        "price": "$6",
-                    },
-                    {
-                        "name": "Relax in Petit Socco",
-                        "type": "Leisure",
-                        "location": "Petit Socco, Tanger",
-                        "description": "Relax and people-watch in Petit Socco",
-                        "price": "Varies",
-                    },
-                ],
-                "food": ["Try Bocadillos", "Spanish Omelette", "Churros"],
-                "transportation": "Walking or local buses",
-            },
-        }
+            raise AuthenticationFailed('Unauthenticated!')
+        user_id=payload['id']
+        traject=Traject.objects.filter(userId=user_id).last()
+        time=traject.time
+        ville=traject.ville
+        number=traject.person_number
+        chat = ChatOpenAI(model_name="gpt-3.5-turbo",temperature=0.3)
+        data={
+  "day1": {
+    "activities": [
+      {
+        "name": "Visit Jardin Majorelle",
+        "type": "Sightseeing",
+        "location": "Jardin Majorelle, Marrakech",
+        "description": "Explore the beautiful gardens of Jardin Majorelle",
+        "price": "$10"
+      },
+      {
+        "name": "Explore Medina",
+        "type": "Sightseeing",
+        "location": "Medina, Marrakech",
+        "description": "Get lost in the bustling streets of the historic Medina",
+        "price": "Free"
+      },
+      {
+        "name": "Shop in Souks",
+        "type": "Shopping",
+        "location": "Souks, Marrakech",
+        "description": "Experience the vibrant souks of Marrakech",
+        "price": "Varies"
+      }
+    ],
+    "food": ["Try Tagine", "Taste Moroccan Tea", "Enjoy Couscous"],
+    "transportation": "Local taxis or walking"
+  },
+  "day2": {
+    "activities": [
+      {
+        "name": "Visit Bahia Palace",
+        "type": "Sightseeing",
+        "location": "Bahia Palace, Marrakech",
+        "description": "Discover the grandeur of Bahia Palace",
+        "price": "$7"
+      },
+      {
+        "name": "Explore Jemaa el-Fnaa",
+        "type": "Sightseeing",
+        "location": "Jemaa el-Fnaa, Marrakech",
+        "description": "Experience the lively square of Jemaa el-Fnaa",
+        "price": "Free"
+      },
+      {
+        "name": "Relax in Hammam",
+        "type": "Leisure",
+        "location": "Hammam, Marrakech",
+        "description": "Indulge in a traditional Moroccan hammam experience",
+        "price": "$20"
+      }
+    ],
+    "food": ["Try Pastilla", "Savor Moroccan Pastries", "Enjoy Harira Soup"],
+    "transportation": "Local buses or rental car"
+  }
+}
 
+
+      
         messages = [
             SystemMessage(
                 content=f"""
