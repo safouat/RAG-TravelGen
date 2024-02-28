@@ -12,7 +12,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Guider, Match, Plan, Traject, User
-from .serializer import GuideSerializer, MatchSerializer, UserSerializer,TrajectSerializer,PlanSerializer
+from .serializer import (
+    GuideSerializer,
+    MatchSerializer,
+    UserSerializer,
+    TrajectSerializer,
+    PlanSerializer,
+)
 
 CHROMA_PATH = "./api/data/chroma"
 CHROMA_PATH2 = "./api/data/chroma2"
@@ -214,96 +220,88 @@ class TrajectDetail(APIView):
         chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3)
 
         data = {
-    "hotels": [
-        {
-            "nom": "ETOILE DU NORD",
-            "ville": "Tanger",
-            "adresse": "11, Bd. Sidi med.Ben Abdellah",
-            "numero_telephone": "0539-33-65-76/77"
-        },
-        {
-            "nom": "ROYAL",
-            "ville": "Tanger",
-            "adresse": "144, Rue de la Plage Salah Eddin Elayoubi",
-            "numero_telephone": "0539/93.89.68 064/16.78.80"
+            "hotels": [
+                {
+                    "nom": "ETOILE DU NORD",
+                    "ville": "Tanger",
+                    "adresse": "11, Bd. Sidi med.Ben Abdellah",
+                    "numero_telephone": "0539-33-65-76/77",
+                },
+                {
+                    "nom": "ROYAL",
+                    "ville": "Tanger",
+                    "adresse": "144, Rue de la Plage Salah Eddin Elayoubi",
+                    "numero_telephone": "0539/93.89.68 064/16.78.80",
+                },
+            ],
+            "restaurants": [
+                {
+                    "nom": "Le Pecheur de Detroit",
+                    "type": "1 fourchette",
+                    "provinence": "Tanger-Tétouan-Al Hoceima",
+                    "region": "Tanger-Assilah",
+                    "ville": "TANGER",
+                    "adresse": "RUE AHMED CHAOUKI/ TANGER",
+                    "numero_telephone": "539373810",
+                }
+            ],
+            "activites": [
+                {
+                    "nom": "Visite de la Kasbah des Oudayas",
+                    "prix": "Gratuit (certains sites peuvent avoir des frais d'entrée)",
+                },
+                {"nom": "Promenade le long de la corniche", "prix": "Gratuit"},
+                {"nom": "Visite du Musée de la Kasbah", "prix": "50 MAD par adulte"},
+                {"nom": "Shopping au souk", "prix": "Variable en fonction des achats"},
+                {"nom": "Détente sur les plages de Tanger", "prix": "Gratuit"},
+                {
+                    "nom": "Visite du Musée d'Art Contemporain de la Ville de Tanger (MACVT)",
+                    "prix": "30 MAD par personne",
+                },
+                {
+                    "nom": "Excursion à Cap Spartel et les grottes d'Hercule",
+                    "prix": "200 MAD par personne (inclut le transport et le guide)",
+                },
+                {
+                    "nom": "Dégustation de fruits de mer",
+                    "prix": "Variable en fonction du restaurant",
+                },
+                {
+                    "nom": "Excursion à Chefchaouen",
+                    "prix": "Variable en fonction du type de visite guidée",
+                },
+                {
+                    "nom": "Exploration de la Médina de Tanger",
+                    "prix": "Gratuit (certains sites peuvent avoir des frais d'entrée)",
+                },
+            ],
+            "food": [
+                "Tagine (variety of flavors)",
+                "Couscous (traditional Moroccan dish)",
+                "Mint Tea (popular Moroccan beverage)",
+                "Seafood (fresh from the coast)",
+                "Paella (Spanish influence)",
+                "Tapas (Spanish influence)",
+            ],
+            "description": """
+            Tanger, a city pulsating with history and flavor, beckons travelers with its myriad experiences. Immerse yourself in its enchanting streets where the past intertwines with the present. Stay at the iconic ETOILE DU NORD or the luxurious ROYAL hotels, offering comfort and elegance amidst Tanger's charm. Indulge your taste buds at Le Pecheur de Detroit, where culinary mastery meets the freshest seafood delights.
+            Explore the heart of Tanger through a myriad of activities. Wander through the ancient Kasbah des Oudayas, a testament to the city's rich heritage. Take in the breathtaking views from Cap Spartel and delve into the mysteries of the caves of Hercules on a captivating excursion. Discover contemporary art at the Museum of Contemporary Art of Tanger (MACVT) or lose yourself in the vibrant souks, where every corner holds a treasure waiting to be found.
+            Savor the essence of Moroccan cuisine with aromatic Tagines, delicate Couscous, and refreshing Mint Tea. Tantalize your palate with the fusion of Spanish influence in Paella and Tapas. Treat yourself to a gastronomic journey through the flavors of Tanger's diverse culinary landscape.
+            Whether you're exploring the winding streets of the Medina or basking in the sun-kissed beaches, Tanger offers an unforgettable blend of history, culture, and gastronomy that promises to enchant every traveler who sets foot on its shores.""",
+            "title": "Tanger Travel Guide",
         }
-    ],
-    "restaurants": [
-        {
-            "nom": "Le Pecheur de Detroit",
-            "type": "1 fourchette",
-            "provinence": "Tanger-Tétouan-Al Hoceima",
-            "region": "Tanger-Assilah",
-            "ville": "TANGER",
-            "adresse": "RUE AHMED CHAOUKI/ TANGER",
-            "numero_telephone": "539373810"
-        }
-    ],
-    "activites": [
-        {
-            "nom": "Visite de la Kasbah des Oudayas",
-            "prix": "Gratuit (certains sites peuvent avoir des frais d'entrée)"
-        },
-        {
-            "nom": "Promenade le long de la corniche",
-            "prix": "Gratuit"
-        },
-        {
-            "nom": "Visite du Musée de la Kasbah",
-            "prix": "50 MAD par adulte"
-        },
-        {
-            "nom": "Shopping au souk",
-            "prix": "Variable en fonction des achats"
-        },
-        {
-            "nom": "Détente sur les plages de Tanger",
-            "prix": "Gratuit"
-        },
-        {
-            "nom": "Visite du Musée d'Art Contemporain de la Ville de Tanger (MACVT)",
-            "prix": "30 MAD par personne"
-        },
-        {
-            "nom": "Excursion à Cap Spartel et les grottes d'Hercule",
-            "prix": "200 MAD par personne (inclut le transport et le guide)"
-        },
-        {
-            "nom": "Dégustation de fruits de mer",
-            "prix": "Variable en fonction du restaurant"
-        },
-        {
-            "nom": "Excursion à Chefchaouen",
-            "prix": "Variable en fonction du type de visite guidée"
-        },
-        {
-            "nom": "Exploration de la Médina de Tanger",
-            "prix": "Gratuit (certains sites peuvent avoir des frais d'entrée)"
-        }
-    ],
-    "food": [
-        "Tagine (variety of flavors)",
-        "Couscous (traditional Moroccan dish)",
-        "Mint Tea (popular Moroccan beverage)",
-        "Seafood (fresh from the coast)",
-        "Paella (Spanish influence)",
-        "Tapas (Spanish influence)"
-    ],
-    "description": """
-    Tanger, a city pulsating with history and flavor, beckons travelers with its myriad experiences. Immerse yourself in its enchanting streets where the past intertwines with the present. Stay at the iconic ETOILE DU NORD or the luxurious ROYAL hotels, offering comfort and elegance amidst Tanger's charm. Indulge your taste buds at Le Pecheur de Detroit, where culinary mastery meets the freshest seafood delights.
-
-    Explore the heart of Tanger through a myriad of activities. Wander through the ancient Kasbah des Oudayas, a testament to the city's rich heritage. Take in the breathtaking views from Cap Spartel and delve into the mysteries of the caves of Hercules on a captivating excursion. Discover contemporary art at the Museum of Contemporary Art of Tanger (MACVT) or lose yourself in the vibrant souks, where every corner holds a treasure waiting to be found.
-
-    Savor the essence of Moroccan cuisine with aromatic Tagines, delicate Couscous, and refreshing Mint Tea. Tantalize your palate with the fusion of Spanish influence in Paella and Tapas. Treat yourself to a gastronomic journey through the flavors of Tanger's diverse culinary landscape.
-
-    Whether you're exploring the winding streets of the Medina or basking in the sun-kissed beaches, Tanger offers an unforgettable blend of history, culture, and gastronomy that promises to enchant every traveler who sets foot on its shores.""",
-}
 
         messages = [
             SystemMessage(
                 content=f"""
-Act as a travel recommendation. You should absolutely utilize the data provided by users for hotels and restaurants. All hotels in the provided data should be included in the template. For the activites and food, generate them with the maximum informations (for example 20 activity and 10 food to do) based on your knowledge. and strictly adhere to the provided template {data}  don't add now fields .all the subfield on the json file should be on the ville {ville1} if  a ville not in {ville1} should not be in the output for example the template contain only TANGER on ville .for the description it should include all hotels and retaurants gived by user for activiteis talk a little bit about them
-"""
+            Act as a travel recommendation.
+            You should absolutely utilize the data provided by users for hotels and restaurants.
+            All hotels in the provided data should be included in the template.
+            For the activites and food, generate them with the maximum informations (for example 20 activity and 10 food to do) based on your knowledge.
+            and strictly adhere to the provided template {data}  don't add now fields .all the subfield on the json file should be on the ville {ville1} if  a ville not in {ville1} should not be in the output for example the template contain only TANGER on ville. 
+            For the description it should include all hotels and retaurants given by user for activities talk a little bit about them. 
+            For the title you should generate it yourself.
+        """
             ),
             HumanMessage(
                 content=f"By using the whole {structured_data} format it to json  . i will be there with {nombre} member,generate me some activities to do and food to eat to do in {ville1} from your knowledge .for activities generate them based on objectif of this travel is {objectif} "
@@ -317,11 +315,13 @@ Act as a travel recommendation. You should absolutely utilize the data provided 
             ville=ville1,
             time=time,
             person_number=nombre,
-            json_content=json.loads(response.content), 
-            description=json.loads(response.content)["description"] ,# Python dictionary to be serialized into JSON
+            json_content=json.loads(response.content),
+            description=json.loads(response.content)["description"],
+            # title=json.loads(response.content)["title"],
         )
 
         return Response(json.loads(response.content))
+
 
 class GetUserTrajects(APIView):
     def get(self, request):
@@ -333,20 +333,21 @@ class GetUserTrajects(APIView):
             payload = jwt.decode(token, "secret", algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
-        
+
         user_id = payload["id"]
-        
+
         # Récupération des trajects de l'utilisateur avec l'ID user_id
         trajects = Traject.objects.filter(userId=user_id).all()
-        
+
         # Sérialisation des trajects récupérés
         serializer = TrajectSerializer(trajects, many=True)
-        
+
         return Response(serializer.data)
-    
+
+
 class GetOneUserTraject(APIView):
-      def get(self, request):
-        id = request.GET.get('id')
+    def get(self, request):
+        id = request.GET.get("id")
 
         token = request.COOKIES.get("jwt")
         if not token:
@@ -356,21 +357,12 @@ class GetOneUserTraject(APIView):
             payload = jwt.decode(token, "secret", algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
-        
+
         user_id = payload["id"]
-        trajects = Traject.objects.filter(userId=user_id,id=id).all()
+        trajects = Traject.objects.filter(userId=user_id, id=id).all()
         serializer = TrajectSerializer(trajects, many=True)
         return Response(serializer.data)
 
-
-
-
-
-    
-    
-    
-    
-    
 
 class TrajectPlanification(APIView):
     def get(self, request):
@@ -381,72 +373,74 @@ class TrajectPlanification(APIView):
         try:
             payload = jwt.decode(token, "secret", algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Unauthenticated!')
-        user_id=payload['id']
-        traject=Traject.objects.filter(userId=user_id).last()
-        time=traject.time
-        ville=traject.ville
-        number=traject.person_number
-        chat = ChatOpenAI(model_name="gpt-3.5-turbo",temperature=0.3)
-        data={
-  "day1": {
-    "activities": [
-      {
-        "name": "Visit Jardin Majorelle",
-        "type": "Sightseeing",
-        "location": "Jardin Majorelle, Marrakech",
-        "description": "Explore the beautiful gardens of Jardin Majorelle",
-        "price": "$10"
-      },
-      {
-        "name": "Explore Medina",
-        "type": "Sightseeing",
-        "location": "Medina, Marrakech",
-        "description": "Get lost in the bustling streets of the historic Medina",
-        "price": "Free"
-      },
-      {
-        "name": "Shop in Souks",
-        "type": "Shopping",
-        "location": "Souks, Marrakech",
-        "description": "Experience the vibrant souks of Marrakech",
-        "price": "Varies"
-      }
-    ],
-    "food": ["Try Tagine", "Taste Moroccan Tea", "Enjoy Couscous"],
-    "transportation": "Local taxis or walking"
-  },
-  "day2": {
-    "activities": [
-      {
-        "name": "Visit Bahia Palace",
-        "type": "Sightseeing",
-        "location": "Bahia Palace, Marrakech",
-        "description": "Discover the grandeur of Bahia Palace",
-        "price": "$7"
-      },
-      {
-        "name": "Explore Jemaa el-Fnaa",
-        "type": "Sightseeing",
-        "location": "Jemaa el-Fnaa, Marrakech",
-        "description": "Experience the lively square of Jemaa el-Fnaa",
-        "price": "Free"
-      },
-      {
-        "name": "Relax in Hammam",
-        "type": "Leisure",
-        "location": "Hammam, Marrakech",
-        "description": "Indulge in a traditional Moroccan hammam experience",
-        "price": "$20"
-      }
-    ],
-    "food": ["Try Pastilla", "Savor Moroccan Pastries", "Enjoy Harira Soup"],
-    "transportation": "Local buses or rental car"
-  }
-}
+            raise AuthenticationFailed("Unauthenticated!")
+        user_id = payload["id"]
+        traject = Traject.objects.filter(userId=user_id).last()
+        time = traject.time
+        ville = traject.ville
+        number = traject.person_number
+        chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3)
+        data = {
+            "day1": {
+                "activities": [
+                    {
+                        "name": "Visit Jardin Majorelle",
+                        "type": "Sightseeing",
+                        "location": "Jardin Majorelle, Marrakech",
+                        "description": "Explore the beautiful gardens of Jardin Majorelle",
+                        "price": "$10",
+                    },
+                    {
+                        "name": "Explore Medina",
+                        "type": "Sightseeing",
+                        "location": "Medina, Marrakech",
+                        "description": "Get lost in the bustling streets of the historic Medina",
+                        "price": "Free",
+                    },
+                    {
+                        "name": "Shop in Souks",
+                        "type": "Shopping",
+                        "location": "Souks, Marrakech",
+                        "description": "Experience the vibrant souks of Marrakech",
+                        "price": "Varies",
+                    },
+                ],
+                "food": ["Try Tagine", "Taste Moroccan Tea", "Enjoy Couscous"],
+                "transportation": "Local taxis or walking",
+            },
+            "day2": {
+                "activities": [
+                    {
+                        "name": "Visit Bahia Palace",
+                        "type": "Sightseeing",
+                        "location": "Bahia Palace, Marrakech",
+                        "description": "Discover the grandeur of Bahia Palace",
+                        "price": "$7",
+                    },
+                    {
+                        "name": "Explore Jemaa el-Fnaa",
+                        "type": "Sightseeing",
+                        "location": "Jemaa el-Fnaa, Marrakech",
+                        "description": "Experience the lively square of Jemaa el-Fnaa",
+                        "price": "Free",
+                    },
+                    {
+                        "name": "Relax in Hammam",
+                        "type": "Leisure",
+                        "location": "Hammam, Marrakech",
+                        "description": "Indulge in a traditional Moroccan hammam experience",
+                        "price": "$20",
+                    },
+                ],
+                "food": [
+                    "Try Pastilla",
+                    "Savor Moroccan Pastries",
+                    "Enjoy Harira Soup",
+                ],
+                "transportation": "Local buses or rental car",
+            },
+        }
 
-
-      
         messages = [
             SystemMessage(
                 content=f"""
@@ -464,6 +458,7 @@ Act as a travel recommendation.the journees, you should generate it based on you
 
         return Response(json.loads(response.content))
 
+
 class GetUserPlannings(APIView):
     def get(self, request):
         token = request.COOKIES.get("jwt")
@@ -474,15 +469,15 @@ class GetUserPlannings(APIView):
             payload = jwt.decode(token, "secret", algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
-        
+
         user_id = payload["id"]
-        
+
         # Récupération des trajects de l'utilisateur avec l'ID user_id
         trajects = Plan.objects.filter(userId=user_id).all()
-        
+
         # Sérialisation des trajects récupérés
         serializer = PlanSerializer(trajects, many=True)
-        
+
         return Response(serializer.data)
 
 
