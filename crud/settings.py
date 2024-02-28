@@ -82,12 +82,12 @@ WSGI_APPLICATION = 'crud.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'travel111',   # Replace 'your_database_name' with the name of your MySQL database.
-        'USER': 'safouat',  # Replace 'your_mysql_username' with your MySQL username.
-        'PASSWORD': '111',  # Replace 'your_mysql_password' with your MySQL password.
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',   # Replace 'your_database_name' with the name of your MySQL database.
+        'USER': 'postgres',  # Replace 'your_mysql_username' with your MySQL username.
+        'PASSWORD': 'pass123',  # Replace 'your_mysql_password' with your MySQL password.
         'HOST': 'localhost',  # Replace 'localhost' with the hostname or IP address of your MySQL server.
-        'PORT': '3306',  # Replace '3306' with the port number of your MySQL server.
+        'PORT': '5432',  # Replace '3306' with the port number of your MySQL server.
     }
 }
 
@@ -123,6 +123,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+APPEND_SLASH=False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
