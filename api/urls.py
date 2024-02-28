@@ -2,9 +2,9 @@
 from django.urls import path
 from .views import (
     TrajectDetail,
-    GetUserTrajects,
     TrajectPlanification,
     GetUserPlannings,
+    GetUserTrajects,
     RegisterView,
     LoginView,
     LogoutView,
