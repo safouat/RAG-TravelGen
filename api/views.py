@@ -380,7 +380,6 @@ class TrajectPlanification(APIView):
         time = traject.time
         ville = traject.ville
         number = traject.person_number
-        chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3)
         data = {
             "day1": {
                 "activities": [
