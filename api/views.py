@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Guider, Match, Plan, Traject, User
-from .serializer import GuideSerializer, MatchSerializer, UserSerializer
+from .serializer import GuideSerializer, MatchSerializer, UserSerializer,TrajectSerializer,PlanSerializer
 
 CHROMA_PATH = "./api/data/chroma"
 CHROMA_PATH2 = "./api/data/chroma2"
@@ -296,11 +296,31 @@ Act as a travel recommendation. You should absolutely utilize the data provided 
             ville=ville1,
             time=time,
             person_number=nombre,
-            json_content=response.content,  # Python dictionary to be serialized into JSON
+            json_content=json.loads(response.content),  # Python dictionary to be serialized into JSON
         )
 
         return Response(json.loads(response.content))
 
+class GetUserTrajects(APIView):
+    def get(self, request):
+        token = request.COOKIES.get("jwt")
+        if not token:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        try:
+            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated!")
+        
+        user_id = payload["id"]
+        
+        # Récupération des trajects de l'utilisateur avec l'ID user_id
+        trajects = Traject.objects.filter(userId=user_id).all()
+        
+        # Sérialisation des trajects récupérés
+        serializer = TrajectSerializer(trajects, many=True)
+        
+        return Response(serializer.data)
 
 class TrajectPlanification(APIView):
     def get(self, request):
@@ -393,6 +413,27 @@ Act as a travel recommendation.the journees, you should generate it based on you
         plan = Plan.objects.create(userId=user_id, json_content=response.content)
 
         return Response(json.loads(response.content))
+
+class GetUserPlannings(APIView):
+    def get(self, request):
+        token = request.COOKIES.get("jwt")
+        if not token:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        try:
+            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated!")
+        
+        user_id = payload["id"]
+        
+        # Récupération des trajects de l'utilisateur avec l'ID user_id
+        trajects = Plan.objects.filter(userId=user_id).all()
+        
+        # Sérialisation des trajects récupérés
+        serializer = PlanSerializer(trajects, many=True)
+        
+        return Response(serializer.data)
 
 
 class GetMatchs(ListAPIView):
