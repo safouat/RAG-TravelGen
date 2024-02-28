@@ -1,10 +1,15 @@
 # Welcome to TravelAPI!
 
 TravelAPI is a Django server API specifically designed to enhance travel recommendations for trajects and plannings using advanced techniques like retrieval-augmented generation RAG. The primary goal of TravelAPI is to refine the language model (LLM), particularly leveraging OpenAI in our case, to provide users with highly specific and accurate recommendations for restaurants and hotels.
+
 ## Data:
 We utilized two datasets:
 - one for restaurants sourced from [Minister of Tourism and Agriculture](https://mtaess.gov.ma/fr/annuaires/annuaire-des-etablissements-dhebergements-touristique/)
 - another for hotels from [Ministry of Agriculture](https://www.agriculture.gov.ma/sites/default/files/2021-09/annexe3_-_liste_des_restaurants_touristiques_independants_classes-_2018-.pdf)
+
+## Front End:
+[Rihla FrontEnd](https://github.com/AElKaimouni/rihla)
+
 
 ## How It Works
 
