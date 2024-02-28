@@ -22,12 +22,12 @@ class UserSerializer(serializers.ModelSerializer):
 class TrajectSerializer(serializers.ModelSerializer):
     class Meta:
         model=Traject
-        field='__all__'
+        fields='__all__'
 
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model=Plan
-        field='__all__'
+        fields='__all__'
 
 class MatchSerializer(serializers.ModelSerializer):
     class Meta:

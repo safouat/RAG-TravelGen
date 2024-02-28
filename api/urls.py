@@ -2,7 +2,9 @@
 from django.urls import path
 from .views import (
     TrajectDetail,
+    GetUserTrajects,
     TrajectPlanification,
+    GetUserPlannings,
     RegisterView,
     LoginView,
     LogoutView,
@@ -11,6 +13,8 @@ from .views import (
     GetOneMatch,
     GetGuides,
     GetOneGuide,
+
+
 )
 
 urlpatterns = [
@@ -19,7 +23,9 @@ urlpatterns = [
     path("Lougout/", LogoutView.as_view(), name="logout"),
     path("UserInfo/", UserInfo.as_view(), name="UserInfo"),
     path("Traject/", TrajectDetail.as_view(), name="traject_detail"),
+    path("Trajects/", GetUserTrajects.as_view(), name="trajects"),
     path("Plan/", TrajectPlanification.as_view(), name="traject_plan"),
+    path("Plans/", GetUserPlannings.as_view(), name="traject_plan"),
     path("Matchs/", GetMatchs.as_view(), name="Matchs"),
     path("match/<int:pk>/", GetOneMatch.as_view(), name="get_one_match"),
     path("Guides/", GetGuides.as_view(), name="Guides"),
