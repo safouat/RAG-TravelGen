@@ -23,8 +23,11 @@ from .serializer import (
 CHROMA_PATH = "./api/data/chroma"
 CHROMA_PATH2 = "./api/data/chroma2"
 
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+JWT_SECRET = os.environ.get("JWT_SECRET")
+JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM")
 
-os.environ["OPENAI_API_KEY"] = "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"
+chat = ChatOpenAI(api_key=OPENAI_API_KEY, model_name="gpt-3.5-turbo", temperature=0.3)
 
 
 class RegisterView(APIView):
@@ -54,7 +57,7 @@ class LoginView(APIView):
             "iat": datetime.datetime.utcnow(),
         }
 
-        token = jwt.encode(payload, "secret", algorithm="HS256")
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         response = Response()
 
@@ -78,7 +81,7 @@ class UserInfo(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -104,7 +107,7 @@ class TrajectDetail(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
@@ -217,8 +220,6 @@ class TrajectDetail(APIView):
 
         # -----------------------use OpenAI MODELS --------------------#
 
-        chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3)
-
         data = {
             "hotels": [
                 {
@@ -330,7 +331,7 @@ class GetUserTrajects(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -354,7 +355,7 @@ class GetOneUserTraject(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 
@@ -371,7 +372,7 @@ class TrajectPlanification(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
@@ -466,7 +467,7 @@ class GetUserPlannings(APIView):
             raise AuthenticationFailed("Unauthenticated!")
 
         try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
 

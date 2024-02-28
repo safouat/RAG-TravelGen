@@ -6,12 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8000:8000
-    environment:
-      DATABASE_HOST: db
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: pass123
-      DATABASE_NAME: postgres
-      DATABASE_PORT: 5432
+    env_file:
+      - .env
     depends_on:
       - db
   db:
