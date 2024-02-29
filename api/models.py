@@ -31,7 +31,7 @@ class Traject(models.Model):
 
 class Plan(models.Model):
         userId=models.IntegerField(default=1)
-        traject=models.ForeignKey(Traject, on_delete=models.CASCADE, default=1, null=True, blank=True)
+        traject_id=models.ForeignKey(Traject, on_delete=models.CASCADE, default=1, null=True, blank=True)
         json_content = models.JSONField()
         def save(self, *args, **kwargs):
         # Serialize the JSON content before saving

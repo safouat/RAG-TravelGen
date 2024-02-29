@@ -337,7 +337,7 @@ class TrajectDetail(APIView):
 class GetPlanTraject(APIView):
     def get(self, request):
         trajectId = request.GET.get("trajectId")
-        plan = Plan.objects.filter(traject=trajectId)
+        plan = Plan.objects.filter(traject_id=trajectId)
         serializer = PlanSerializer(plan, many=True)
 
         return Response(serializer.data)
@@ -478,7 +478,7 @@ class TrajectPlanification(APIView):
         ]
         response = chat(messages)
 
-        plan = Plan.objects.create(userId=user_id, json_content=response.content, traject=trajectId)
+        plan = Plan.objects.create(userId=user_id, json_content=response.content, traject_id=trajectId)
         return Response(json.loads(response.content))
 
 
