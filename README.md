@@ -1,6 +1,6 @@
 # Welcome to TravelAPI!
 
-TravelAPI is a Django server API specifically designed to enhance travel recommendations for trajects and plannings using advanced techniques like retrieval-augmented generation RAG. The primary goal of TravelAPI is to refine the language model (LLM), particularly leveraging OpenAI in our case, to provide users with highly specific and accurate recommendations for restaurants and hotels.
+TravelAPI is a Django server API specifically designed to enhance travel recommendations for trajects and plannings using advanced techniques like retrieval-augmented generation RAG. The primary goal of TravelAPI is to refine the language model (LLM), particularly leveraging OpenAI in our case, to provide users with highly specific and accurate recommendations for restaurants and hotels and activities to do in Morocco.
 
 ## Data:
 We utilized two datasets:
