@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TrajectSerializer(serializers.ModelSerializer):
     class Meta:
         model=Traject
-        fields=["id","budget","ville","time","person_number","description", "title"]
+        fields=["id","budget","ville","time","person_number","description", "title", "json_content"]
 
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
