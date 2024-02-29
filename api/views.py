@@ -331,7 +331,16 @@ class TrajectDetail(APIView):
             title=json_content["title"],
         )
 
-        return Response(json_content)
+        return Response({"id": traject.id, "json_content": json_content})
+
+
+class GetPlanTraject(APIView):
+    def get(self, request):
+        trajectId = request.GET.get("trajectId")
+        plan = Plan.objects.filter(traject=trajectId)
+        serializer = PlanSerializer(plan, many=True)
+
+        return Response(serializer.data)
 
 
 class GetUserTrajects(APIView):
@@ -390,8 +399,9 @@ class TrajectPlanification(APIView):
         time = traject.time
         ville = traject.ville
         number = traject.person_number
+        trajectId = Traject.objects.get(id=traject.id)
         # -----------------------use OpenAI MODELS --------------------#
-        #fmt: off
+        # fmt: off
         data = {
             "day1": {
                 "activities": [
@@ -468,8 +478,7 @@ class TrajectPlanification(APIView):
         ]
         response = chat(messages)
 
-        plan = Plan.objects.create(userId=user_id, json_content=response.content)
-
+        plan = Plan.objects.create(userId=user_id, json_content=response.content, traject=trajectId)
         return Response(json.loads(response.content))
 
 

@@ -1,6 +1,7 @@
 from django.db import models
 import json
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 class User(AbstractUser):
     name = models.CharField(max_length=255)
@@ -14,6 +15,7 @@ class User(AbstractUser):
 
 class Traject(models.Model):
     userId=models.IntegerField(default=1)
+    datetime = models.DateTimeField(default=timezone.now)
     budget = models.CharField(max_length=100)  # Adjust max_length as needed
     ville = models.CharField(max_length=100)  # Adjust max_length as needed
     time = models.CharField(max_length=100)
@@ -22,7 +24,6 @@ class Traject(models.Model):
     description = models.CharField(max_length=2000,default='none')
     title = models.CharField(max_length=255,default='none')
 
-
     def save(self, *args, **kwargs):
         # Serialize the JSON content before saving
         self.json_content = json.dumps(self.json_content)
@@ -30,6 +31,7 @@ class Traject(models.Model):
 
 class Plan(models.Model):
         userId=models.IntegerField(default=1)
+        traject=models.ForeignKey(Traject, on_delete=models.CASCADE, default=1, null=True, blank=True)
         json_content = models.JSONField()
         def save(self, *args, **kwargs):
         # Serialize the JSON content before saving

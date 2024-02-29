@@ -14,8 +14,7 @@ from .views import (
     GetOneMatch,
     GetGuides,
     GetOneGuide,
-
-
+    GetPlanTraject
 )
 
 urlpatterns = [
@@ -32,4 +31,5 @@ urlpatterns = [
     path("match/<int:pk>/", GetOneMatch.as_view(), name="get_one_match"),
     path("Guides/", GetGuides.as_view(), name="Guides"),
     path("guide/<int:pk>/", GetOneGuide.as_view(), name="get_one_guide"),
+    path("PlanTraject/", GetPlanTraject.as_view(), name="traject_plan1"),
 ]
