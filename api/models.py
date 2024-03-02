@@ -30,13 +30,13 @@ class Traject(models.Model):
         super().save(*args, **kwargs)
 
 class Plan(models.Model):
-        userId=models.IntegerField(default=1)
-        traject_id=models.ForeignKey(Traject, on_delete=models.CASCADE, default=1, null=True, blank=True)
-        json_content = models.JSONField()
-        def save(self, *args, **kwargs):
-        # Serialize the JSON content before saving
-            self.json_content = json.dumps(self.json_content)
-            super().save(*args, **kwargs)
+    userId=models.IntegerField(default=1)
+    traject_id=models.ForeignKey(Traject, on_delete=models.CASCADE, default=1, null=True, blank=True)
+    json_content = models.JSONField()
+    def save(self, *args, **kwargs):
+    # Serialize the JSON content before saving
+        self.json_content = json.dumps(self.json_content)
+        super().save(*args, **kwargs)
 
 class Match(models.Model):
      date=models.DateField()
