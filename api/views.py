@@ -16,14 +16,16 @@ from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formataddr
 
-from .models import Guider, Match, Plan, Traject, User
+from .models import Guider, Match, Plan, Traject, User,Transport
 from .serializer import (
     GuideSerializer,
     MatchSerializer,
     UserSerializer,
     TrajectSerializer,
     PlanSerializer,
+    TransportSerializer,
 )
+
 
 CHROMA_PATH = "./api/data/chroma"
 CHROMA_PATH2 = "./api/data/chroma2"
@@ -602,3 +604,10 @@ class SendGuideMail(APIView):
         server.quit()
 
         return Response("The message was sent")
+
+class GetCityTransport(APIView):
+    def get(self, request):
+        city = request.GET.get("city")
+        queryset = Transport.objects.filter(city=city).all()
+        serializer = TransportSerializer(queryset, many=True)
+        return Response(serializer.data)
