@@ -565,7 +565,7 @@ class SendGuideMail(APIView):
 
         # Create message
         message = f"""
-        Dear {name},
+        Dear Guider,
 
         We hope this message finds you well. We are writing to confirm your assignment as a guider for {name} on their upcoming travel through the Rihla App. We appreciate your willingness to assist and guide User A throughout their journey.
 
