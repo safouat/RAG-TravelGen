@@ -11,6 +11,11 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formataddr
+
 from .models import Guider, Match, Plan, Traject, User
 from .serializer import (
     GuideSerializer,
@@ -26,6 +31,8 @@ CHROMA_PATH2 = "./api/data/chroma2"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 JWT_SECRET = os.environ.get("JWT_SECRET")
 JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM")
+EmailPassword=os.environ.get("PasswordMail")
+
 
 chat = ChatOpenAI(api_key=OPENAI_API_KEY, model_name="gpt-3.5-turbo", temperature=0.3)
 
@@ -528,3 +535,70 @@ class GetOneGuide(RetrieveAPIView):
         Match.objects.all()
     )  # Assurez-vous que cette requête récupère les objets Match que vous souhaitez sérialiser
     serializer_class = MatchSerializer
+
+class SendGuideMail(APIView):
+    def get(self, request):
+        authorization_header = request.headers.get("Authorization")
+
+        if not authorization_header or "Bearer " not in authorization_header:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        token = authorization_header.split(" ")[1]
+
+        if not token:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        try:
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        user = User.objects.filter(id=payload["id"]).first()
+        name = user.name
+        email = user.email
+        recipient_email = request.GET.get("email")
+        print(recipient_email)
+
+        sender = 'rihlaapp@zohomail.com'
+        sender_title = f"Guiding Assignment for {name}"
+
+
+        # Create message
+        message = f"""
+        Dear {name},
+
+        We hope this message finds you well. We are writing to confirm your assignment as a guider for {name} on their upcoming travel through the Rihla App. We appreciate your willingness to assist and guide User A throughout their journey.
+
+        As a guider, your role is pivotal in ensuring that {name} has a fulfilling and enriching travel experience. Your expertise and knowledge will undoubtedly contribute greatly to their exploration and understanding of the destinations they visit.
+
+        Please ensure that you are well-prepared to provide guidance on various aspects, including local customs, attractions, safety measures, and any other pertinent information that may enhance User A's journey.
+
+        Your commitment to professionalism and excellence reflects the values we uphold at Rihla, and we trust that you will represent our platform admirably during your interactions {name}.
+
+        Should you require any assistance or have any questions regarding your responsibilities, please do not hesitate to reach out to us. We are here to support you every step of the way.
+
+        Once again, thank you for your dedication to guiding and enriching the travel experiences of our users. We look forward to hearing about the positive impact of your guidance on {name}'s journey.
+
+        To contact the tourists check here his email: {email}
+
+        Warm regards,
+
+        Rihla App
+        """
+
+        msg = MIMEText(message, 'plain', 'utf-8')
+        msg['Subject'] = Header("Sent from python", 'utf-8')
+        msg['From'] = formataddr((str(Header(sender_title, 'utf-8')), sender))
+        msg['To'] = recipient_email
+
+        # Create server object with SSL option
+        # Change below smtp.zoho.com, corresponds to your location in the world.
+        # For instance smtp.zoho.eu if you are in Europe or smtp.zoho.in if you are in India.
+        server = smtplib.SMTP_SSL('smtp.zoho.com', 465)
+
+        # Perform operations via server
+        server.login('rihlaapp@zohomail.com', EmailPassword)
+        server.sendmail(sender, [recipient_email], msg.as_string())
+        server.quit()
+
+        return Response("The message was sent")
