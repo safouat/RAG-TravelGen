@@ -36,6 +36,4 @@ urlpatterns = [
     path("PlanTraject/", GetPlanTraject.as_view(), name="traject_plan1"),
     path("Mail/", SendGuideMail.as_view(), name="send_mail"),
     path("Transport/", GetCityTransport.as_view(), name="transport"),
-
-
 ]

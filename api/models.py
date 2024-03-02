@@ -29,6 +29,7 @@ class Traject(models.Model):
         self.json_content = json.dumps(self.json_content)
         super().save(*args, **kwargs)
 
+
 class Plan(models.Model):
     userId=models.IntegerField(default=1)
     traject_id=models.ForeignKey(Traject, on_delete=models.CASCADE, default=1, null=True, blank=True)

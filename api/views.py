@@ -569,16 +569,11 @@ class SendGuideMail(APIView):
         message = f"""
         Dear Guider,
 
-        We hope this message finds you well. We are writing to confirm your assignment as a guider for {name} on their upcoming travel through the Rihla App. We appreciate your willingness to assist and guide User A throughout their journey.
-
+        We hope this message finds you well. We are writing to confirm your assignment as a guider for {name} on their upcoming travel through the Rihla App. We appreciate your willingness to assist and guide {name} throughout their journey.
         As a guider, your role is pivotal in ensuring that {name} has a fulfilling and enriching travel experience. Your expertise and knowledge will undoubtedly contribute greatly to their exploration and understanding of the destinations they visit.
-
-        Please ensure that you are well-prepared to provide guidance on various aspects, including local customs, attractions, safety measures, and any other pertinent information that may enhance User A's journey.
-
+        Please ensure that you are well-prepared to provide guidance on various aspects, including local customs, attractions, safety measures, and any other pertinent information that may enhance {name}'s journey.
         Your commitment to professionalism and excellence reflects the values we uphold at Rihla, and we trust that you will represent our platform admirably during your interactions {name}.
-
         Should you require any assistance or have any questions regarding your responsibilities, please do not hesitate to reach out to us. We are here to support you every step of the way.
-
         Once again, thank you for your dedication to guiding and enriching the travel experiences of our users. We look forward to hearing about the positive impact of your guidance on {name}'s journey.
 
         To contact the tourists check here his email: {email}
