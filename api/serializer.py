@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Traject, Plan, User, Match, Guider
+from .models import Traject, Plan, User, Match, Guider,Transport
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,4 +37,9 @@ class MatchSerializer(serializers.ModelSerializer):
 class GuideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Guider
+        fields = "__all__"
+
+class TransportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transport
         fields = "__all__"
