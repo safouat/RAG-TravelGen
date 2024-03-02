@@ -54,6 +54,13 @@ class Guider(models.Model):
     ville= models.CharField(max_length=255)
     description= models.CharField(max_length=1000,default='none')
     avatar=models.CharField(max_length=255,default='none')
+
+
+class Transport(models.Model):
+    city = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, unique=True)
+    picture= models.CharField(max_length=255)
+    transportType= models.CharField(max_length=1000)
      
      
 
