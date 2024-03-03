@@ -16,7 +16,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formataddr
 
-from .models import Guider, Match, Plan, Traject, User,Transport
+from .models import Guider, Match, Plan, Traject, User,Transport,Train
 from .serializer import (
     GuideSerializer,
     MatchSerializer,
@@ -24,6 +24,7 @@ from .serializer import (
     TrajectSerializer,
     PlanSerializer,
     TransportSerializer,
+    TrainSerializer,
 )
 
 
@@ -600,9 +601,21 @@ class SendGuideMail(APIView):
 
         return Response("The message was sent")
 
+    
 class GetCityTransport(APIView):
     def get(self, request):
-        city = request.GET.get("city")
-        queryset = Transport.objects.filter(city=city).all()
-        serializer = TransportSerializer(queryset, many=True)
-        return Response(serializer.data)
+        ville_depart = request.GET.get("depart")
+        ville_arrivee = request.GET.get("target")
+
+        transports_queryset = Transport.objects.filter(city=ville_arrivee)
+        trains_queryset = Train.objects.filter(ville_depart=ville_depart, ville_arrivee=ville_arrivee).first()
+
+        transport_serializer = TransportSerializer(transports_queryset, many=True)
+        train_serializer = TrainSerializer(trains_queryset, many=True)
+
+        return Response({
+
+            'transports': transport_serializer.data,
+            'trains': train_serializer.data
+       
+})
