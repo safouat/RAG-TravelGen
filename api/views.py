@@ -534,10 +534,8 @@ class GetGuides(ListAPIView):
 
 
 class GetOneGuide(RetrieveAPIView):
-    queryset = (
-        Guider.objects.all()
-    )  # Assurez-vous que cette requête récupère les objets Match que vous souhaitez sérialiser
-    serializer_class = MatchSerializer
+    queryset = Guider.objects.all()
+    serializer_class = GuideSerializer
 
 class SendGuideMail(APIView):
     def get(self, request):
