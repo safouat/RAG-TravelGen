@@ -608,7 +608,8 @@ class GetCityTransport(APIView):
         ville_arrivee = request.GET.get("target")
 
         transports_queryset = Transport.objects.filter(city=ville_arrivee)
-        trains_queryset = Train.objects.filter(ville_depart=ville_depart, ville_arrivee=ville_arrivee).first()
+        trains_queryset = Train.objects.filter(ville_depart=ville_depart, ville_arrivee=ville_arrivee)
+
 
         transport_serializer = TransportSerializer(transports_queryset, many=True)
         train_serializer = TrainSerializer(trains_queryset, many=True)
