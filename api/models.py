@@ -62,6 +62,13 @@ class Transport(models.Model):
     description = models.CharField(max_length=255, unique=True)
     picture= models.CharField(max_length=255)
     transportType= models.CharField(max_length=1000)
+
+
+class Train(models.Model):
+     ville_depart=models.CharField(max_length=255)
+     ville_arrivee=models.CharField(max_length=255)
+     description=models.CharField(max_length=2000)
+
      
      
 
