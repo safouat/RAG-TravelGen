@@ -535,7 +535,7 @@ class GetGuides(ListAPIView):
 
 class GetOneGuide(RetrieveAPIView):
     queryset = (
-        Match.objects.all()
+        Guider.objects.all()
     )  # Assurez-vous que cette requête récupère les objets Match que vous souhaitez sérialiser
     serializer_class = MatchSerializer
 
