@@ -35,7 +35,5 @@ node_modules/
 .coverage
 .pytest_cache/
 
-# Ignore migrations
-**/migrations/
 
 
