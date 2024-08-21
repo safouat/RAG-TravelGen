@@ -11,13 +11,20 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Guider, Match, Plan, Traject, User
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formataddr
+
+from .models import Guider, Match, Plan, Traject, User,Transport,Train
 from .serializer import (
     GuideSerializer,
     MatchSerializer,
     UserSerializer,
     TrajectSerializer,
     PlanSerializer,
+    TransportSerializer,
+    TrainSerializer,
 )
 
 CHROMA_PATH = "./api/data/chroma"
@@ -26,6 +33,7 @@ CHROMA_PATH2 = "./api/data/chroma2"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 JWT_SECRET = os.environ.get("JWT_SECRET")
 JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM")
+EmailPassword=os.environ.get("PasswordMail")
 
 chat = ChatOpenAI(api_key=OPENAI_API_KEY, model_name="gpt-3.5-turbo", temperature=0.3)
 
@@ -120,11 +128,11 @@ class TrajectDetail(APIView):
             raise AuthenticationFailed("Unauthenticated!")
         user_id = payload["id"]
 
-        budget = request.data.get("budget")
-        ville1 = request.data.get("city")
-        time = request.data.get("time")
-        nombre = request.data.get("number")
-        objectif = request.data.get("objectif")
+        budget = request.data.get("budget") #budget for each day
+        ville1 = request.data.get("city")  #target city
+        time = request.data.get("time")  #time spending on target city
+        nombre = request.data.get("number")  #number of travelers
+        objectif = request.data.get("objectif")  #objectif
 
         # -------------helping the search models with those statistics-----------------------#
         hebergement = int(budget) * 0.5
@@ -176,6 +184,7 @@ class TrajectDetail(APIView):
         structured_data = {"hotels": [], "restaurant": []}
 
         for i in dict["hotels"]:
+          
             parts = i.split("\n")
             if len(parts) > 4:
 
@@ -194,6 +203,7 @@ class TrajectDetail(APIView):
                 }
                 structured_data["hotels"].append(entry_dict)
         for i in dict["restaurants"]:
+           
 
             parts = i.split()
 
@@ -319,7 +329,7 @@ class TrajectDetail(APIView):
         response = chat(messages)
 
         json_content = json.loads(response.content)
-
+        
         traject = Traject.objects.create(
             userId=user_id,
             budget=budget,
@@ -331,16 +341,7 @@ class TrajectDetail(APIView):
             title=json_content["title"],
         )
 
-        return Response({"id": traject.id, "json_content": json_content})
-
-
-class GetPlanTraject(APIView):
-    def get(self, request):
-        trajectId = request.GET.get("trajectId")
-        plan = Plan.objects.filter(traject_id=trajectId)
-        serializer = PlanSerializer(plan, many=True)
-
-        return Response(serializer.data)
+        return Response(json_content)
 
 
 class GetUserTrajects(APIView):
@@ -390,7 +391,7 @@ class TrajectPlanification(APIView):
         if not token:
             raise AuthenticationFailed("Unauthenticated!")
 
-        try:
+        try:  
             payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated!")
@@ -399,9 +400,11 @@ class TrajectPlanification(APIView):
         time = traject.time
         ville = traject.ville
         number = traject.person_number
+        
         trajectId = Traject.objects.get(id=traject.id)
+
         # -----------------------use OpenAI MODELS --------------------#
-        # fmt: off
+        #fmt: off
         data = {
             "day1": {
                 "activities": [
@@ -478,9 +481,17 @@ class TrajectPlanification(APIView):
         ]
         response = chat(messages)
 
-        plan = Plan.objects.create(userId=user_id, json_content=response.content, traject_id=trajectId)
+        plan = Plan.objects.create(userId=user_id, json_content=response.content,traject=trajectId)
+
         return Response(json.loads(response.content))
 
+class GetPlanTraject(APIView):
+     def get(self, request):
+        trajectId=request.GET.get("trajectId")
+        plan=Plan.objects.filter(traject_id=trajectId)
+        serializer = PlanSerializer(plan, many=True)
+
+        return Response(serializer.data)
 
 class GetUserPlannings(APIView):
     def get(self, request):
@@ -525,6 +536,110 @@ class GetGuides(ListAPIView):
 
 class GetOneGuide(RetrieveAPIView):
     queryset = (
-        Match.objects.all()
+        Guider.objects.all()
     )  # Assurez-vous que cette requête récupère les objets Match que vous souhaitez sérialiser
-    serializer_class = MatchSerializer
+    serializer_class = GuideSerializer
+
+class SendGuideMail(APIView):
+    def get(self, request):
+        authorization_header = request.headers.get("Authorization")
+
+        if not authorization_header or "Bearer " not in authorization_header:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        token = authorization_header.split(" ")[1]
+
+        if not token:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        try:
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        user = User.objects.filter(id=payload["id"]).first()
+        name = user.name
+        email = user.email
+        recipient_email = request.GET.get("email")
+        print(recipient_email)
+
+        sender = 'rihlaapp@zohomail.com'
+        sender_title = f"Guiding Assignment for {name}"
+
+
+        # Create message
+        message = f"""
+        Dear Guider,
+
+        We hope this message finds you well. We are writing to confirm your assignment as a guider for {name} on their upcoming travel through the Rihla App. We appreciate your willingness to assist and guide User A throughout their journey.
+
+        As a guider, your role is pivotal in ensuring that {name} has a fulfilling and enriching travel experience. Your expertise and knowledge will undoubtedly contribute greatly to their exploration and understanding of the destinations they visit.
+
+        Please ensure that you are well-prepared to provide guidance on various aspects, including local customs, attractions, safety measures, and any other pertinent information that may enhance User A's journey.
+
+        Your commitment to professionalism and excellence reflects the values we uphold at Rihla, and we trust that you will represent our platform admirably during your interactions {name}.
+
+        Should you require any assistance or have any questions regarding your responsibilities, please do not hesitate to reach out to us. We are here to support you every step of the way.
+
+        Once again, thank you for your dedication to guiding and enriching the travel experiences of our users. We look forward to hearing about the positive impact of your guidance on {name}'s journey.
+
+        To contact the tourists check here his email: {email}
+
+        Warm regards,
+
+        Rihla App
+        """
+
+        msg = MIMEText(message, 'plain', 'utf-8')
+        msg['Subject'] = Header("Sent from python", 'utf-8')
+        msg['From'] = formataddr((str(Header(sender_title, 'utf-8')), sender))
+        msg['To'] = recipient_email
+
+        # Create server object with SSL option
+        # Change below smtp.zoho.com, corresponds to your location in the world.
+        # For instance smtp.zoho.eu if you are in Europe or smtp.zoho.in if you are in India.
+        server = smtplib.SMTP_SSL('smtp.zoho.com', 465)
+
+        # Perform operations via server
+        server.login('rihlaapp@zohomail.com', EmailPassword)
+        server.sendmail(sender, [recipient_email], msg.as_string())
+        server.quit()
+
+        return Response("The message was sent")
+    
+class GetCityTransport(APIView):
+    def get(self, request):
+        ville_depart = request.GET.get("depart")
+        ville_arrivee = request.GET.get("target")
+
+        transports_queryset = Transport.objects.filter(city=ville_arrivee)
+        trains_queryset = Train.objects.filter(ville_depart=ville_depart, ville_arrivee=ville_arrivee)
+
+
+        transport_serializer = TransportSerializer(transports_queryset, many=True)
+        train_serializer = TrainSerializer(trains_queryset, many=True)
+
+        return Response({
+
+            'transports': transport_serializer.data,
+            'trains': train_serializer.data
+       
+})
+
+
+
+    
+
+
+    
+
+    
+    
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+ messages = [
+    SystemMessage(content=f"""
+Act as a travel recommendation. You should absolutely utilize the data provided by users for hotels and restaurants. All hotels in the provided data should be included in the template. For the activites and food, generate them with the maximum informations (for example 20 activity and 10 food to do) based on your knowledge. and strictly adhere to the provided template {data}  don't add now fields .all the subfield on the json file should be on the city {ville1} if  a city not in {ville1} should not be in the output for example the template contain only TANGER on ville .
+"""),
+    HumanMessage(content=f"By using the whole {structured_data} format it to json  . generate me some activities to do and food to eat to do in {ville1} from your knowledge ")
+]

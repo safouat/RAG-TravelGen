@@ -77,23 +77,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'crud.wsgi.application'
 
-DATABASE_NAME = os.environ.get('DATABASE_NAME', "postgres")
-DATABASE_USER = os.environ.get('DATABASE_USER', "postgres")
-DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD', "pass123")
+DATABASE_NAME = os.environ.get('DATABASE_NAME', "travel111")
+DATABASE_USER = os.environ.get('DATABASE_USER', "safouat")
+DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD', "111")
 DATABASE_HOST = os.environ.get('DATABASE_HOST', "localhost")
-DATABASE_PORT = os.environ.get("DATABASE_PORT", "5432")
+DATABASE_PORT = os.environ.get("DATABASE_PORT", "3306")
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DATABASE_NAME,   # Replace 'your_database_name' with the name of your MySQL database.
-        'USER': DATABASE_USER,  # Replace 'your_mysql_username' with your MySQL username.
-        'PASSWORD': DATABASE_PASSWORD,  # Replace 'your_mysql_password' with your MySQL password.
-        'HOST': DATABASE_HOST,  # Replace 'localhost' with the hostname or IP address of your MySQL server.
-        'PORT': DATABASE_PORT,  # Replace '3306' with the port number of your MySQL server.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': DATABASE_NAME,   
+        'USER': DATABASE_USER,  
+        'PASSWORD': DATABASE_PASSWORD,  
+        'HOST': DATABASE_HOST, 
+        'PORT': DATABASE_PORT,  
     }
 }
 
